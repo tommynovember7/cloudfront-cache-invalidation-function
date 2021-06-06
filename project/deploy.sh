@@ -13,7 +13,8 @@ npm install --production
 
 if [[ -f "$FILE" ]]; then
     echo "$FILE exists." && \
-    rm -f "$FILE"
+    rm -f "$FILE" && \
+    echo "$FILE removed."
 fi
 zip -r "$FILE" . && \
-docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli:latest lambda update-function-code --function-name vg-cloudfront-invalidation --zip-file "fileb://./$FILE"
+docker run --rm -ti -e "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" -e "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" -e "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" -v $(pwd):/aws -w /aws amazon/aws-cli:latest lambda update-function-code --function-name vg-cloudfront-invalidation --zip-file "fileb://./$FILE"
