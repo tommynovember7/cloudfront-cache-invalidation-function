@@ -1,0 +1,5 @@
+.bashrc
+.env
+.idea
+node_modules
+project.prod
